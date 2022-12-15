@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Data | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 3 Data | YOUR TITLE HERE" />
+  <title>Chapter 3 Data | Alcohol consumption preferences in Iowa</title>
+  <meta name="description" content="Chapter 3 Data | Alcohol consumption preferences in Iowa" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Data | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 3 Data | Alcohol consumption preferences in Iowa" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Data | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 3 Data | Alcohol consumption preferences in Iowa" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Shiyuan Xu - Ying Hong - Longcong Xu" />
 
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -69,14 +69,18 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">GR5702 group 15 Final Project</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="proposal.html"><a href="proposal.html"><i class="fa fa-check"></i><b>2</b> Proposal</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="proposal.html"><a href="proposal.html#research-topic"><i class="fa fa-check"></i><b>2.1</b> Research topic</a></li>
-<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a></li>
+<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="proposal.html"><a href="proposal.html#catigorical-data"><i class="fa fa-check"></i><b>2.2.1</b> Catigorical Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="proposal.html"><a href="proposal.html#numerical-data"><i class="fa fa-check"></i><b>2.2.2</b> Numerical Data</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
@@ -98,7 +102,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Alcohol consumption preferences in Iowa</a>
           </h1>
         </div>
 
@@ -110,12 +114,38 @@
 <h1><span class="header-section-number">Chapter 3</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this <a href="https://data.iowa.gov/Sales-Distribution/2019-Iowa-Liquor-Sales/38x4-vs5h">2019 Iowa Liquor Sales dataset</a>, there are very few missing values. There are as many as 24 attributes, which include Date of consumption, Store Name, Category Name, Vendor name and more, detailing every single alcohol consumption. In addition, this dataset is rich in Catigorical Data as well as Numerical Data, and we can use as many kinds of charts as possible to explore the data in the subsequent analysis.</p>
+<p>The dataset was collected from grocery stores, liquor stores, convenience stores and so on which has Class E liquor license. We can export it as csv file and import to Rstudio. The dataset consists of 2.38 million points with 24 columns. With reference to the purpose of our study, we do not need to use all of the data.</p>
+<p>Basic information about the data:</p>
+<p>We sampled out 100,000 items of data on alcohol sales. Among them, the records with some missing columns are 303, less than 0.3% of the total. A total of 1735 stores contributed data, and the data included 53 types of wine. We have already covered continuous data and categorical data in detail in data availability section.</p>
+<p>Describe any issues / problems with the data:</p>
+<p>We did find some data issues, for example, all Sunday sales data was missing from our dataset. Outside of the initial time, a portion of the Saturday data was also missing. This part of missing is not shown in the missing value analysis because a whole row of data is not recorded. The absence of this part of the data slightly affected our analysis. In the time series analysis part, we were able to find that the sales figures were higher in the second half of the year, and one of the factors was the presence of Saturday data in the second half of the year. To avoid this issue from affecting our exploration of data periodicity, we choose pin Friday data to explore whether the data are cyclical.</p>
 </div>
 <div id="cleaning-transformation" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Cleaning / transformation<a href="data.html#cleaning-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Originally, raw data contains 2380345 rows, since the source data file size is too large, the source file is over 500MB, which exceeds the limit of GitHub upload and R manipulation, we first used Python to randomly sample 100000 data as the research data for this project.</p>
+<p>Then, to ensure as efficient a run as possible in the study, we removed some columns that were not very relevant to the research, or that were related to other columns. Like Store Location, which accurate to latitude and longitude in raw dataset. We do not think we need to include Store Location since the Zip code variable seems more usable. Similarly, we delete address variable. AS for Invoice/Item Number, it is just the id of each flow, and we think that the multivariate afterwards can avoid duplication.</p>
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To explore the presence of missing values, we first count how many missing values exist for each column. From the displayed results, we have a small percentage of missing values in our dataset, for example Store Name, Store Number, Date and these columns do not have missing values. The attributes that do have the highest number of values are concentrated in City, Zip Code, County Number, County. And they have the same exact data, which inspired us to explore the pattern of missing values.</p>
+<pre><code>##                  City              Zip Code         County Number 
+##                   188                   188                   188 
+##                County              Category         Category Name 
+##                   188                   115                   115 
+##          Bottles Sold     State Bottle Cost   State Bottle Retail 
+##                     7                     1                     1 
+## Volume Sold (Gallons)                  Date          Store Number 
+##                     1                     0                     0 
+##            Store Name         Vendor Number           Vendor Name 
+##                     0                     0                     0 
+##           Item Number      Item Description                  Pack 
+##                     0                     0                     0 
+##    Bottle Volume (ml)        Sale (Dollars) 
+##                     0                     0</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The package naniar provides us with a good visualization method. gg_miss_upset function visually shows us what the missing data values are and which columns have missing values. In addition to that, there are some associated missing values column, connected by a solid black line. There is a clear and strong correlation between the geographical location and the attributes of the city. In City, Zip Code, County Number, County. Once one is missing, all other values are also missing. They are a set of combinations together. In addition, another independent missing value attribute is Category Name, but there are not many, out of 100,000 data, only 115 data do not have this attribute.</p>
+<p>Since the absence of a particular attribute in the data is rare, direct deletion does not affect the rendering of the data. We choose to delete the missing value using na.omit() function.</p>
 
 </div>
 </div>
@@ -156,7 +186,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/data.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/edit/main/data.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -164,7 +194,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/data.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/blob/main/data.Rmd",
 "text": null
 },
 "download": null,

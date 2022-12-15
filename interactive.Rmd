@@ -1,3 +1,112 @@
 # Interactive component
 
+```{=html}
+<script src="https://d3js.org/d3.v7.js"></script>
+```
 
+This is the data about mouthly liquor sale data in 2019 Iowa.
+
+First step: click anywhere in graph area, title show up!
+
+Then, you can click any ball at bottom of graph, the ball will transit to specific place!
+
+<svg id="withaxes" width="755" height="800">
+
+</svg>
+
+```{=html}
+<script>
+  svg = d3.select("svg#withaxes")
+
+  const margin = {top: 20, right: 50, bottom: 30, left: 50}
+
+  const width =  +svg.attr("width") - margin.left - margin.right
+
+  const height = +svg.attr("height") - margin.top - margin.bottom
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  const parseTime = d3.timeParse("%b");
+
+  xScale = d3.scaleTime().range([0, width]);
+
+  yScale = d3.scaleLinear()
+    .domain([50, 120])
+    .range([height, 0]);
+
+  const xAxis = d3.axisBottom()
+    .scale(xScale)
+    .tickFormat(d3.timeFormat("%m"));
+
+  const line = d3.line()
+    .x(d => xScale(d.date))
+    .y(d => yScale(d.high));
+
+ const data =
+    [{"date":"Jan","high":78.435},
+    {"date":"Feb","high":80.8},
+    {"date":"Mar","high":79.6},
+    {"date":"Apr","high":90.3},
+    {"date":"May","high":103.4},
+    {"date":"Jun","high":94.4},
+    {"date":"July","high":102.2},
+    {"date":"Aug","high":96.9},
+    {"date":"Sep","high":92.8},
+    {"date":"Oct","high":102.6},
+    {"date":"Nov", "high":96.0},
+    {"date":"Dec", "high":107.7}];
+    
+    data.forEach(function(d) {
+        d.date = parseTime(d.date);
+    });
+
+
+
+  xScale
+    .domain(d3.extent(data, d => d.date));
+
+  g.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis);
+
+  g.append("g")
+    .call(d3.axisLeft(yScale))
+
+  g.append("path")
+    .datum(data)
+    .attr("class", "line")
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-width", 0)
+    .attr("d", line);
+    
+  const dataset = [{s: 0, sw: 450}, {s: 60, sw: 430}, {s: 120, sw: 440}, {s: 180, sw: 320}, {s: 240, sw: 190}, {s: 300, sw: 290}, {s: 360, sw: 210}, {s: 420, sw: 265}, {s: 480, sw: 300}, {s: 540, sw: 200}, {s: 600, sw: 260}, {s: 660, sw: 150}];
+  const circ = d3.select("g").selectAll("circle").data(dataset);
+  circ.enter()
+      .append("circle")
+        .attr("cx", d => d.s)
+        .attr("cy", d => 750)
+        .attr("r", "8")
+        .attr("fill", "orange");
+  
+  d3.select("g")
+  .on("click", function(event) {
+    d3.select("g")
+  .selectAll("circle")
+  .transition()
+  .duration(2000)
+  .attr("cy", d => d.sw);
+      });
+      
+  d3.select("svg")
+  .on("click", function () {
+    d3.select("svg")
+      .append("text")
+        .attr("x", "250")
+        .attr("y", "30")
+        .text("Monthly Bottles Sold (in 1000)")
+        .style("font-size", "2em");
+        });
+    
+</script>
+```

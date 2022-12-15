@@ -9,3 +9,8 @@ missing-value-analysis
 results
 interactive-component
 conclusion
+catigorical-data
+numerical-data
+peoples-drinking-preferences
+regional-perspective
+timing-perspective

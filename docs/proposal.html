@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Proposal | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <title>Chapter 2 Proposal | Alcohol consumption preferences in Iowa</title>
+  <meta name="description" content="Chapter 2 Proposal | Alcohol consumption preferences in Iowa" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 2 Proposal | Alcohol consumption preferences in Iowa" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 2 Proposal | Alcohol consumption preferences in Iowa" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Shiyuan Xu - Ying Hong - Longcong Xu" />
 
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -69,14 +69,18 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">GR5702 group 15 Final Project</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="proposal.html"><a href="proposal.html"><i class="fa fa-check"></i><b>2</b> Proposal</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="proposal.html"><a href="proposal.html#research-topic"><i class="fa fa-check"></i><b>2.1</b> Research topic</a></li>
-<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a></li>
+<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="proposal.html"><a href="proposal.html#catigorical-data"><i class="fa fa-check"></i><b>2.2.1</b> Catigorical Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="proposal.html"><a href="proposal.html#numerical-data"><i class="fa fa-check"></i><b>2.2.2</b> Numerical Data</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
@@ -98,7 +102,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Alcohol consumption preferences in Iowa</a>
           </h1>
         </div>
 
@@ -110,10 +114,50 @@
 <h1><span class="header-section-number">Chapter 2</span> Proposal<a href="proposal.html#proposal" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="research-topic" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Research topic<a href="proposal.html#research-topic" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will analyze the dataset from three main perspectives. Firstly, we will select some purchase volume indicators to show people’s drinking preferences. Then, we will analyze whether preferences differ between regions in Iowa from a geographic perspective. Finally, we will analyze whether people’s alcohol consumption follows the seasons from a temporal perspective.</p>
+<p><strong>People’s drinking preferences</strong></p>
+<p>We will use attributes such as Category Name, Sale (Dollars), etc. to represent people’s consumption preferences. For example, we will find out which liquors are the most popular in Iowa and which are the least popular. Which type of alcohol had the highest turnover in 2019. Whether people buy alcohol in large or small quantities.</p>
+<p><strong>Regional perspective</strong></p>
+<p>In addition, detailed geographic information is given in the dataset, which includes the store address, the county and the city where it is located. We want to study the differences in people’s alcohol consumption in different regions. For example, at which administrative level is there an obvious difference in alcohol consumption, the City level or the County level or the Zipcode level?</p>
+<p><strong>Timing perspective</strong></p>
+<p>Finally, our dataset also records the time of each alcoholic beverage purchase, with data accurate to the day. We will use the Date to explore whether Iowa residents’ consumption of alcohol is influenced by season. Whether there are significant cyclical variations in people’s consumption of alcohol, etc.</p>
 </div>
 <div id="data-availability" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Data availability<a href="proposal.html#data-availability" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this <a href="https://data.iowa.gov/Sales-Distribution/2019-Iowa-Liquor-Sales/38x4-vs5h">2019 Iowa Liquor Sales dataset</a>, there are very few missing values. There are as many as 24 attributes, which include Date of consumption, Store Name, Category Name, Vendor name and more, detailing every single alcohol consumption. In addition, this dataset is rich in Catigorical Data as well as Numerical Data, and we can use as many kinds of charts as possible to explore the data in the subsequent analysis.</p>
+<p>The dataset was collected from grocery stores, liquor stores, convenience stores and so on which has Class E liquor license. If we encounter some questions, we can simply submit contact request form in Iowa government website. How to use the data? We can export it as csv file and import to Rstudio. The dataset consists of 2.38 million points with 24 columns. In this particular project, we will discard the identification information such as “Invoice Number”, “Store Adress”, “Item Number”, etc.</p>
+<p>In the next modules, Catigorical Data and Numerical Data, we analyze each of the attributes contained in the database, their size, origin and some characteristics.</p>
+<div id="catigorical-data" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Catigorical Data<a href="proposal.html#catigorical-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Date:</strong> from 01/02/2019 to 12/31/2019. There are some missing days. 264 days in total.</p>
+<p><strong>Store Number:</strong> Each store is associated with a unique store number. 1748 store numbers in total.</p>
+<p><strong>Store Name:</strong> Name of each store. 1759 store names in total.</p>
+<p><strong>Address:</strong> Address of stores. 1751 unique addresses in total and 4764 NaN values out of 2380345 rows.</p>
+<p><strong>City:</strong> Cities where the stores are located. 428 stores in total and 4764 NaN values out of 2380345 rows.</p>
+<p><strong>Zip Code:</strong> Zip codes associated with the store locations. 462 zip codes in total and 4764 NaN values out of 2380345 rows.</p>
+<p><strong>Store Location:</strong> longitude and latitude of store locations. 1611 unique geographic coordinates and 219390 NaN values out of 2380345 rows.</p>
+<p><strong>County Number:</strong> Iowa county number of the counties where the stores are located. 99 unique counties in total and 4764 NaN values out of 2380345 rows.</p>
+<p><strong>County:</strong> Iowa counties where the stores are located. 99 unique counties in total and 4764 NaN values out of 2380345 rows.</p>
+<p><strong>Category:</strong> Category codes the liquor is associated with. 53 unique categories of liquor and 2918 NaN values out of 2380345 rows.</p>
+<p><strong>Category Name:</strong> Categories of liquor. 53 unique categories of liquor and 2918 NaN values out of 2380345 rows.</p>
+<p><strong>Vendor Number:</strong> Vendor number of the company for the brand of liquor. 191 unique vendor numbers and 1 NaN value out of 2380345 rows.</p>
+<p><strong>Vendor Name:</strong> Vendor name of the company for the brand of liquor. 192 unique vendor names and 1 NaN value out of 2380345 rows.</p>
+<p><strong>Item Number:</strong> Item number associated with each liquor product. 4008 unique item numbers in total and no missing values.</p>
+<p><strong>Item Description:</strong> Description of each liquor item such as “HAWKEYE VODKA” and “RUSSELL’S RESERVE 10YR”. 3475 descriptions in total and no missing values.</p>
+</div>
+<div id="numerical-data" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Numerical Data<a href="proposal.html#numerical-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Pack</strong> (The number of bottles in a case for the liquor ordered) column Pack has a mean of 12.43, a standard deviation of 8.11, a min of 1.0, a median of 12.0, and a max of 48.0.</p>
+<p><strong>Bottle Volume</strong> (Volume of each liquor bottle ordered in milliliters) column Bottle Volume (ml) has a mean of 876.64, a standard deviation of 521.43, a min of 20.0, a median of 750.0, and a max of 6000.0</p>
+<p><strong>State Bottle</strong> Cost (The amount that the Alcoholic Beverages Division paid for each bottle of liquor ordered) column State Bottle Cost has a mean of 10.34, a standard deviation of 8.57, a min of 0.89, a median of 8.25, and a max of 1749.12</p>
+<p><strong>Bottles Sold</strong> (The number of bottles of liquor ordered by the store) column Bottles Sold has a mean of 11.28, a standard deviation of 31.31, a min of 1.0, a median of 6.0, and a max of 6750.0</p>
+<p><strong>State Bottle Retail</strong> (The amount the store paid for each bottle of liquor ordered) column State Bottle Retail has a mean of 15.52, a standard deviation of 12.86, a min of 1.34, a median of 12.38, and a max of 2623.68</p>
+<p><strong>Sale</strong> (Total cost of liquor order (number of bottles multiplied by the state bottle retail) column Sale (Dollars) has a mean of 146.71, a standard deviation of 487.18, a min of 1.34, a median of 75.36, and a max of 78435.0</p>
+<p><strong>Volume Sold</strong> (Total volume of liquor ordered in liters) column Volume Sold (Liters) has a mean of 9.37, a standard deviation of 38.24, a min of 0.02, a median of 4.8, and a max of 11812.5</p>
+<p><strong>Volume Sold:</strong> column Volume Sold (Gallons) has a mean of 2.47, a standard deviation of 10.1, a min of 0.0, a median of 1.26, and a max of 3120.53. This column should be a simple linear transformation of the the above column.</p>
+<p>(Data description is from <a href="https://data.iowa.gov/Sales-Distribution/2019-Iowa-Liquor-Sales/38x4-vs5h">2019 Iowa Liquor Sales dataset</a> which recording the information on liquor sales in Iowa.)</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -153,7 +197,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/proposal.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/edit/main/proposal.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -161,7 +205,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/proposal.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/blob/main/proposal.Rmd",
 "text": null
 },
 "download": null,

@@ -1,1 +1,515 @@
 # Results
+
+## People's drinking preferences
+
+```{r}
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+```
+
+```{r}
+mydata <- readr::read_csv("https://raw.githubusercontent.com/RicoXu727/Leetcode-Note/main/2019_Iowa_Liquor_Sales_sample.csv", show_col_types = FALSE)
+```
+
+```{r}
+drop <- c("Invoice/Item Number","Address", "Store Location", "Volume Sold (Liters)")
+subdata = mydata[,!(names(mydata) %in% drop)]
+```
+
+```{r}
+newdata <- na.omit(subdata)
+```
+
+```{r}
+colnames(newdata)[2] ="StNum"
+colnames(newdata)[3] ="StName"
+colnames(newdata)[6] ="CoNum"
+colnames(newdata)[8] ="Cat"
+colnames(newdata)[9] ="CatName"
+colnames(newdata)[10] ="VenNum"
+colnames(newdata)[11] ="VenName"
+colnames(newdata)[12] ="ItNum"
+colnames(newdata)[13] ="ItDes"
+colnames(newdata)[15] ="BV"
+colnames(newdata)[16] ="SBC"
+colnames(newdata)[17] ="SBR"
+colnames(newdata)[18] ="BS"
+colnames(newdata)[19] ="Sale"
+colnames(newdata)[20] ="VS"
+```
+
+```{r}
+colnames(newdata)[9] ="CatName"
+colnames(newdata)[18] ="BS"
+grp_newdata = newdata %>% group_by(CatName)  %>%
+                    dplyr::summarise(total_sales = sum(BS),
+                              total_amount = sum(Sale),
+                              avg_price = mean(total_amount/total_sales),
+                              .groups = 'drop')
+ 
+Sorted_data <- grp_newdata[order(-grp_newdata$total_sales, -grp_newdata$total_amount),]
+
+```
+
+To explore the drinking preferences of the people of Iowa, we identified the twenty best-selling liquors in Iowa. We chose a bubble chart to show as much data as possible. In a bubble chart, we can use horizontal and vertical coordinates, bubble color, and bubble size to present as much data as possible. Furthermore, we use plotly to generate interaction function.
+
+```{r}
+library(plotly)
+Sorted_data <- Sorted_data[1:21, ]
+Sorted_data$total_amount<-round(Sorted_data$total_amount,3)
+Sorted_data$avg_price<-round(Sorted_data$avg_price,3)
+plot_ly(Sorted_data, x = ~total_amount, y = ~CatName,
+                      size = ~total_sales, sizes = c(10, 30),
+                      color = ~avg_price,
+                      mode = 'markers',
+                      hovertemplate = paste(Sorted_data$CatName, "<br>Total Sales:",Sorted_data$total_sales, "<br>Total amount:", Sorted_data$total_amount, "<br>Average Price:", Sorted_data$avg_price),
+                      marker = list(opacity = 0.7,sizemode = "diameter")) %>% add_markers()%>%layout(title = 'Top 20 liquor Sale in Iowa', xaxis = list(title = 'Total_sales'), yaxis = list(title = 'Category Name'), legend=list(title=list(text='<b>Trend</b>')))
+```
+
+The graph shows that Iowa residents have a clear preference for American Vodkas and Canadian Whiskies. These two liquors are far ahead of other brands in terms of sales. All other liquor sales are concentrated within a range of approximately 1M. Secondly, the factor of price does not play a very significant role in the consumption of liquor. The high sales volume like Canadian Whiskies, it is not cheap the average price is 14.439. Some cheaper liquors, such as American Dry Gin, Blended Whiskies, are no more popular than 100% Agave Tequila.
+
+```{r}
+grp2_newdata = newdata %>% group_by(CatName, BS)  %>%
+                    dplyr::summarize(BScount = sum(BS),
+                              purchase_times = mean(BScount/BS),
+                              .groups = 'drop')
+ 
+Sorted2_data <- grp2_newdata[order(-grp2_newdata$BS),]
+filtered_data <- Sorted2_data[which(Sorted2_data$BScount > 1000 & Sorted2_data$purchase_times > 100 & Sorted2_data$BS > 10),]
+```
+
+```{r}
+library("RColorBrewer") 
+```
+
+Then, we wanted to know which liquors are good for bulk purchases as well as family gatherings in Iowa. Is the reason for the high sales in the previous chart a large volume purchase?
+
+```{r, width = 1000, height = 500}
+library(ggplot2)
+library(ggthemes)
+library(hrbrthemes)
+
+library(viridis)
+filtered_data$BottleSale <- factor(filtered_data$BS)
+# col_grid <- rgb(200, 200, 200, 100, maxColorValue = 255)
+stackg <- ggplot(filtered_data, aes(fill = BottleSale, y=BScount, x=CatName)) + 
+    geom_bar(position="stack", stat="identity") + 
+    # scale_colour_brewer(palette=1, direction=-1) +
+    ggtitle("liquor purchased in large quantities") +
+  scale_fill_viridis(option="mako", discrete = T,  direction=-1) + 
+    theme_ipsum() + xlab("Category of liquors") + ylab("Count of Bottle Sale")+
+  theme(axis.text.x = element_blank(), plot.title = element_text(hjust = 0.5)) 
+    
+ggplotly(stackg)
+```
+
+In this graph, American Vodkas and Canadian Whiskies unsurprisingly leads the pack, except that Whiskies Liqueur is the newest popular object and people like to buy them in bulk. The barchat shows, respectively, how many bottles of this liquor people buy at a time. In terms of purchase volume, Whiskies Liqueur is the most likely to be bought in groups, people often buy 96 bottles at a time. In general, bulk purchases are not very common, and buying 12 bottles at a time is a favorite.
+
+## Regional perspective
+
+```{r}
+library(openintro)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(vcdExtra)
+library(forcats)
+```
+
+```{r}
+data <- readr::read_csv("https://raw.githubusercontent.com/RicoXu727/Leetcode-Note/main/2019_Iowa_Liquor_Sales_sample.csv", show_col_types = FALSE)
+data<- na.omit(data)
+```
+
+```{r pressure}
+#df_county <- data %>% group_by(data$County)
+tb_county <- table(data$County)
+#tb_county
+tb_city <- table(data$City)
+#tb_city
+tb_caat_name <- table(data$"Category Name")
+```
+
+```{r}
+df_geo <- select(data, County, "Category Name", "Bottle Volume (ml)", Pack, "Bottles Sold", "Sale (Dollars)", "Volume Sold (Gallons)" )
+# df_geo
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r fig.height = 8}
+df_bottle_by_county <- df_geo%>% group_by(County) %>% dplyr::summarise(num_bottle_sold = sum(df_geo["Bottles Sold"]))
+
+#ggplot(df_bottle_by_county, aes( x = fct_reorder(County, num_bottle_sold), y = num_bottle_sold)) + geom_point() + 
+#  coord_flip()
+```
+
+```{r}
+df_bottle_sell <- df_geo%>% group_by(County) %>% dplyr::summarise(bottle_sold_100 = sum(`Bottles Sold`)/100, dollar_100 = sum(`Sale (Dollars)`)/100, volume = sum(`Volume Sold (Gallons)`))
+# keep top 30
+df_bottle_sell <- df_bottle_sell %>% slice_max(order_by = `bottle_sold_100`, n = 30)
+#prepare data into three different dfs for later concatenation and plotting
+df_bottle <- select(df_bottle_sell, County, value = bottle_sold_100) %>% add_column(type = "bottle_in_100")
+df_dollar <- select(df_bottle_sell, County, value = dollar_100) %>% add_column(type = "dollars_in_100")
+df_volume <- select(df_bottle_sell, County, value = volume) %>% add_column(type = "gallons")
+df_b_d_v_for_plot <- rbind(df_bottle, df_dollar, df_volume)
+# df_b_d_v_for_plot
+# df_dollar
+
+ggplot(df_b_d_v_for_plot, aes(x = fct_reorder(County, value), y = value, color = type)) + geom_point()+ coord_flip()
+
+```
+
+The dataset includes three events (bottles sold in hundreds, sales in hundreds of dollars, and volume sold in gallons) for 99 counties. For demonstration purposes, only the top 30 counties are included in the graph (ordered by the number of bottles sold).
+
+The three events exhibit a positive correlation
+
+```{r fig.height = 6}
+df_geo_cat <- df_geo%>% group_by(County, `Category Name`) %>% dplyr::summarise(bottle_sold = sum(`Bottles Sold`), dollar_100 = sum(`Sale (Dollars)`)/100, volume = sum(`Volume Sold (Gallons)`))
+#order the dataframe in descending order in the number of bottles sold.
+df_geo_cat_order <- df_geo_cat[order( df_geo_cat[,1], -df_geo_cat[,3] ),]
+# df_geo_cat_order
+
+unique_county <- unique(data$County, decreasing=TRUE)
+#in attempt to keep the data clean, we will plot only the top 5 most sold category
+df_top_cat <- data.frame()
+for (x in unique_county) {
+  temp <- filter(df_geo_cat_order, `County` == x)
+  if (nrow(temp) >= 3){
+    df_top_cat <- rbind(df_top_cat, temp[1:3,])
+  }
+}
+
+#since we only plot the top 30 countries, we must first find the top 30 counties with the most bottle sells.
+df_count <-df_top_cat %>% group_by(County) %>% dplyr::summarise(count = sum(bottle_sold)) %>% slice_max(order_by = `count`, n = 30)
+# df_count
+
+unique_county <- unique(df_count$County, decreasing=TRUE)
+# unique_county
+df_stacked_bar <- data.frame()
+for (x in unique_county) {
+  temp <- filter(df_geo_cat_order, `County` == x)
+  if (nrow(temp) >= 3){
+    df_stacked_bar <- rbind(df_stacked_bar, temp[1:3,])
+  }
+}
+
+#reorder the data from high to low 
+df_stacked_bar$County <- reorder(df_stacked_bar$County, df_stacked_bar$bottle_sold) 
+# plot skacked plot
+ggplot(df_stacked_bar, aes(fill= `Category Name`, y=bottle_sold, x=County)) + 
+    geom_bar(position="stack", stat="identity") + coord_flip()
+```
+
+For demonstration purposes, only the top three best-selling liquor categories for the top 30 counties.
+
+Among 53 different liquor types, nine appeared to be the top-selling category for the selected counties. In addition, whisky and vodka are frequently among the top-selling categories for the selected counties.
+
+```{r fig.height = 6}
+# library(GGally)
+# library(ggplot2)
+# # df_bottle_sell_vol_para_plot <- df_geo%>% group_by(County) %>% summarize(bottle_sold = sum(`Bottles Sold`), dollar = sum(`Sale (Dollars)`), volume = sum(`Volume Sold (Gallons)`))
+# df_bottle_sell_vol_para_plot <- df_geo%>% group_by(County) %>% summarise(bottle_sold = sum(`Bottles Sold`), dollar = sum(`Sale (Dollars)`), volume = sum(`Volume Sold (Gallons)`))
+# 
+# ggparcoord(df_bottle_sell_vol_para_plot, columns = 2:4,splineFactor = 10, alpha = 0.4, scale = "uniminmax")
+```
+
+```{r fig.height = 6}
+#df_top5_cat$County_re <- reorder(df_top5_cat$County, group_by(df_top5_cat)%>% summarize(bottle_sold))
+
+# ggplot(df_top5_cat, aes(fill= `Category Name`, y=bottle_sold, x=County)) + 
+#     geom_bar(position="stack", stat="identity") + coord_flip()
+```
+
+```{r}
+# df_bottle_sell
+
+```
+
+```{r}
+library(usmap)
+library(ggplot2)
+#install_dev(“UrbanInstitute/urbnmapr”)
+
+# plot_usmap("counties", include = 'IA')
+```
+
+```{r}
+df_bottle_sell_vol_para_plot <- df_bottle_sell
+colnames(df_bottle_sell_vol_para_plot)[1] ="fips"
+
+df_bottle_sell_vol_para_plot[[1]] <- tolower(df_bottle_sell_vol_para_plot[[1]])
+
+# print(!is.null(c()))
+# fips("IA", county = "pottawattamie")
+df_bottle_sell_vol_para_plot <- data.frame(df_bottle_sell_vol_para_plot, stringsAsFactors = FALSE)
+
+#4 wrong county names
+
+# df_bottle_sell_vol_para_plot
+```
+
+```{r}
+library(usmap)
+library(ggplot2)
+
+df_bottle_sell_vol_para_plot <- df_geo%>% group_by(County) %>% dplyr::summarise(bottle_sold = sum(`Bottles Sold`), dollar = sum(`Sale (Dollars)`), volume = sum(`Volume Sold (Gallons)`))
+
+#rename and to lower case
+colnames(df_bottle_sell_vol_para_plot)[1] ="fips"
+df_bottle_sell_vol_para_plot[[1]] <- tolower(df_bottle_sell_vol_para_plot[[1]])
+
+#make 2 lists containing code name and english name for each county
+df_bottle_sell_vol_para_plot <- na.omit(df_bottle_sell_vol_para_plot)
+h <- unique(df_bottle_sell_vol_para_plot$fips)
+dict_replace <- c()
+dict_replace_from <- c()
+for (i in 1:length(h)){
+  if (h[i]=="buena vist") {
+    dict_replace <- append(dict_replace, c(fips("IA", county = "buena vista")))
+    dict_replace_from <- append(dict_replace_from, h[i])
+  } else if (h[i]=="cerro gord") {
+    dict_replace <- append(dict_replace, c(fips("IA", county = "cerro gordo")))
+    dict_replace_from <- append(dict_replace_from, h[i])
+  } else if (h[i]=="obrien") {
+    dict_replace <- append(dict_replace, c(fips("IA", county = "o'brien")))
+    dict_replace_from <- append(dict_replace_from, h[i])
+  } else if (h[i]=="pottawatta") {
+    dict_replace <- append(dict_replace, c(fips("IA", county = "Pottawattamie")))
+    dict_replace_from <- append(dict_replace_from, h[i])
+  } else if (is.na(h[i]) == FALSE) {
+    code <- c(fips("IA", county = h[i]))
+    dict_replace <- append(dict_replace, code)
+    dict_replace_from <- append(dict_replace_from, h[i])
+  }
+}
+
+#make replacement from english county name to code name
+library(plyr)
+for (i in 1:length(dict_replace)){
+  df_bottle_sell_vol_para_plot[df_bottle_sell_vol_para_plot == dict_replace_from[i]] <- dict_replace[i]
+}
+
+#draw plot, use usmap package
+plot_usmap(data = df_bottle_sell_vol_para_plot, values = "dollar", include = c("IA"), color = "blue") + 
+  scale_fill_continuous(low = "white", high = "blue", name = "dollar", label = scales::comma) + 
+  labs(title = "Iowa by County", subtitle = "Sells in Dollars") +
+  theme(legend.position = "right")
+
+```
+
+The map shows each county's liquor sales (in dollars) with dark blue being the county with the highest dollar sales.
+
+We notice that counties with higher sales are most likely to include larger cities, suggesting that liquor sales are proportional to county population.
+
+Since sales are positively correlated to total bottles_sold and volume_sold (shown earlier with Cleveland dot plot), we speculate that the latter two variables are also proportional to county population.
+
+## Timing perspective
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+data <- readr::read_csv("https://raw.githubusercontent.com/RicoXu727/Leetcode-Note/main/2019_Iowa_Liquor_Sales_sample.csv", show_col_types = FALSE)
+```
+
+```{r}
+# change to date class
+date_in_date <- as.Date(data$Date, format = "%m/%d/%Y")
+data_new <- cbind(data, date_in_date)
+date_unique <- unique(data_new$date_in_date)
+```
+
+```{r}
+bottles <- c()
+
+for (i in date_unique) {
+  index <- data_new$date_in_date == i
+  total <- sum(data_new$`Bottles Sold`[index], na.rm = TRUE)
+  bottles <- append(bottles,total)
+}
+
+df_bottles <- data.frame(
+  "date_unique" = date_unique,
+  "total_bottles" = bottles
+)
+```
+
+```{r}
+library(lubridate)
+library(ggplot2)
+
+g <- ggplot(df_bottles, aes(date_unique, total_bottles)) +
+  geom_point() +
+  ggtitle("Total Bottles Sold by Date in 2019")+
+  labs (x = "date", y = "bottles")
+
+g +
+  geom_line(color = "grey30") +
+  geom_smooth(color = "blue", se = FALSE)
+```
+
+There is a slight increase in the total amount of bottles sold in all categories of liquor from January to December in 2019.
+
+The daily amount of bottles sold mainly clusters between 3000 and 5000.
+
+The plot shows there are several low values and one zero in daily amount of bottles sold. We speculate that the data is not complete these days.
+
+```{r}
+# library(plotly)
+# 
+# p <- plot_ly(
+#   df_bottles, x = ~date_unique, y = ~total_bottles,
+#   type = "scatter",
+#   mode = "line+markers",
+#   hoverinfo = "text"
+# )
+# 
+# p
+```
+
+```{r}
+mon <- c()
+
+for (i in 1:length(date_unique)) {
+  mon <- append(mon, months(date_unique[i]))
+}
+
+df_bottles <- cbind(df_bottles, "month" = c(mon))
+
+
+month_bottles <- c()
+
+for (i in c(month.name)) {
+  index <- df_bottles$month == i
+  total <- sum(df_bottles$total_bottles[index], na.rm = TRUE)
+  month_bottles <- append(month_bottles,total)
+}
+
+df_bottles_month <- data.frame(
+  "month" = month.name,
+  "total_bottles" =  month_bottles
+)
+
+df_bottles_month$month <- factor(df_bottles_month$month, levels = unique(df_bottles_month$month), ordered = TRUE)
+
+
+ggplot(df_bottles_month, aes(month, total_bottles, group=1)) +
+  geom_line() +
+  ggtitle("Total Bottles Sold by Month in 2019") +
+  labs (x = "month", y = "bottles") +
+  geom_smooth(method = "loess", span = .75, se = FALSE, lwd = 1.5)+
+  theme(axis.text.x = element_text(angle=45))
+
+```
+
+The plot shows that people in Iowa do not purchase as much liquor in the first quarter in 2019 as they do in the other quarters.
+
+There is a significant increase in monthly bottles sold from March to April in 2019. The increase is approximately 22500 bottles.
+
+It is initially assumed that the consumption of liquor during the first quarter of the year is higher since the weather is cold, which contradicts what the data illustrates. We speculate the reason is that people tend not to go out as often due to the cold and snowy weather.
+
+```{r}
+g <- ggplot(df_bottles, aes(date_unique, total_bottles)) + geom_line() +
+  ggtitle("Bottles sold on Fridays") +
+  labs (x = "date", y = "bottles")
+
+friday <- df_bottles |> filter(wday(date_unique) == 6)
+
+g + geom_point(data = friday, aes(date_unique, total_bottles),
+               color = "deeppink")
+```
+
+In the first quarter of 2019, the daily bottles sold on Fridays cluster near 2000. After the first quarter, the daily bottles sold on Fridays cluster near 5000.
+
+In the first quarter, the daily bottles sold on Fridays are often at the lower end among other days of the week. After the first quarter, it gradually shifts to a higher position.
+
+```{r}
+ggplot(df_bottles, aes(date_unique, total_bottles)) +
+  geom_line() +
+  facet_grid(wday(date_unique, label = TRUE)) +
+  ggtitle("Total Bottles Sold by Date in 2019")+
+  labs (x = "date", y = "bottles")
+
+```
+
+The data set does not include any Sunday data. Saturday data is partially included, and it is not possible to draw informative conclusions from incomplete data.
+
+There is no observable difference in the trend in liquor sales among weekdays.
+
+```{r}
+df_december <- filter(df_bottles, month == "December")
+df_november <- filter(df_bottles, month == "November")
+df_nov_dec <- rbind(df_november, df_december)
+
+g <- ggplot(df_nov_dec, aes(date_unique, total_bottles)) +
+  geom_line(color = "deeppink") +
+  geom_point(color = "deeppink") +
+  scale_y_continuous(limits = c(0,7000)) +
+  geom_smooth() +
+  ggtitle("Bottles Sold in November & December in 2019") +
+  labs(x = "day", y = "bottle")
+
+start <- as.Date("2019-12-24")
+end <- as.Date("2019-12-31")
+g + annotate("rect", 
+             xmin = as.Date("2019-12-24"), 
+             xmax = as.Date("2019-12-31"),
+             ymin = -Inf, ymax = Inf, fill = "green",
+             alpha = 0.2) +
+  annotate("text",, x = as.Date("2019-12-24") -8,
+           y = 6800, label = "Dec 24 - Dec 31",
+           color = "green", hjust = 0) +
+  annotate("rect", 
+           xmin = as.Date("2019-11-23"), 
+           xmax = as.Date("2019-11-27"),
+           ymin = -Inf, ymax = Inf, fill = "blue",
+           alpha = 0.2) +
+  annotate("text",, x = as.Date("2019-11-23"),
+           y = 6800, label = "Nov 23 - Nov 27",
+           color = "blue", hjust = 0) +
+  theme_classic()
+
+```
+
+The purple region highlights the bottles sold during Thanksgiving Holiday and the green region highlights the bottles sold during Christmas.
+
+However, the sales of liquor during the holiday seasons is not as high as expected since not all the stores open during holidays and people tend to prepare liquor before holidays.
+
+```{r}
+# mon <- c()
+# 
+# for (i in 1:length(date_in_date)) {
+#   mon <- append(mon, months(date_in_date[i]))
+# }
+# 
+# data_new <- cbind(data_new, "month" = c(mon))
+# 
+# cate <- unique(data_new$`Category Name`)
+# 
+# df_para <- data.frame(
+#   "category" = cate
+# )
+# 
+# 
+# for (i in 1:12) {
+#   mon <- c()
+#   df_mon <- filter(data_new, month == month.name[i])
+#   for (j in 1:length(cate)) {
+#   index <- df_mon$`Category Name` == cate[j]
+#   total <- sum(df_mon$`Bottles Sold`[index], na.rm = TRUE)
+#   mon <- append(mon,total)
+#   }
+#   df_para <- cbind(df_para, mon)
+# }
+```
+
+```{r}
+# library(GGally)
+# colnames(df_para) <- c("category", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+# ggparcoord(df_para)
+```

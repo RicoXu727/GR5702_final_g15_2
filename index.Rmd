@@ -1,9 +1,12 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Alcohol consumption preferences in Iowa"
+author: "Shiyuan Xu - Ying Hong - Longcong Xu"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
 # Introduction
+At a recent Halloween party, the host prepared nearly 10 different types of alcohol for the guests, who tasted them one by one, commented on them, and shared their drinking habits as well as their drinking preferences. This inspired our team to explore people's alcohol consumption preferences. After browsing through a number of official government statistics websites, we were very fortunate to find historical records of alcohol consumption in Iowa for 2019 on the Iowa government website. We wonder if we can discover some of the alcohol consumption preferences of Iowa residents, and if store owners and suppliers might be able to rationalize the wholesale and inventory of alcohol if they are aware of people's preferences.
+
+In this [2019 Iowa Liquor Sales dataset](https://data.iowa.gov/Sales-Distribution/2019-Iowa-Liquor-Sales/38x4-vs5h), there are very few missing values and as many as 24 attributes, which include Date of consumption, Store Name, Category Name, Vendor name and more, detailing every single alcohol consumption. In addition, this dataset is rich in Catigorical Data as well as Numerical Data, and we can use as many kinds of charts as possible to explore the data in the subsequent analysis. 
 

@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Interactive component | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 5 Interactive component | YOUR TITLE HERE" />
+  <title>Chapter 5 Interactive component | Alcohol consumption preferences in Iowa</title>
+  <meta name="description" content="Chapter 5 Interactive component | Alcohol consumption preferences in Iowa" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Interactive component | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 5 Interactive component | Alcohol consumption preferences in Iowa" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Interactive component | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 5 Interactive component | Alcohol consumption preferences in Iowa" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Shiyuan Xu - Ying Hong - Longcong Xu" />
 
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -69,14 +69,18 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">GR5702 group 15 Final Project</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="proposal.html"><a href="proposal.html"><i class="fa fa-check"></i><b>2</b> Proposal</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="proposal.html"><a href="proposal.html#research-topic"><i class="fa fa-check"></i><b>2.1</b> Research topic</a></li>
-<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a></li>
+<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="proposal.html"><a href="proposal.html#catigorical-data"><i class="fa fa-check"></i><b>2.2.1</b> Catigorical Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="proposal.html"><a href="proposal.html#numerical-data"><i class="fa fa-check"></i><b>2.2.2</b> Numerical Data</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
@@ -84,7 +88,12 @@
 <li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#peoples-drinking-preferences"><i class="fa fa-check"></i><b>4.1</b> People’s drinking preferences</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#regional-perspective"><i class="fa fa-check"></i><b>4.2</b> Regional perspective</a></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#timing-perspective"><i class="fa fa-check"></i><b>4.3</b> Timing perspective</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -98,7 +107,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Alcohol consumption preferences in Iowa</a>
           </h1>
         </div>
 
@@ -108,6 +117,106 @@
             <section class="normal" id="section-">
 <div id="interactive-component" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Interactive component<a href="interactive-component.html#interactive-component" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<script src="https://d3js.org/d3.v7.js"></script>
+<p>This is the data about mouthly liquor sale data in 2019 Iowa.</p>
+<p>First step: click anywhere in graph area, title show up!</p>
+<p>Then, you can click any ball at bottom of graph, the ball will transit to specific place!</p>
+<svg id="withaxes" width="755" height="800">
+</svg>
+<script>
+  svg = d3.select("svg#withaxes")
+
+  const margin = {top: 20, right: 50, bottom: 30, left: 50}
+
+  const width =  +svg.attr("width") - margin.left - margin.right
+
+  const height = +svg.attr("height") - margin.top - margin.bottom
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  const parseTime = d3.timeParse("%b");
+
+  xScale = d3.scaleTime().range([0, width]);
+
+  yScale = d3.scaleLinear()
+    .domain([50, 120])
+    .range([height, 0]);
+
+  const xAxis = d3.axisBottom()
+    .scale(xScale)
+    .tickFormat(d3.timeFormat("%m"));
+
+  const line = d3.line()
+    .x(d => xScale(d.date))
+    .y(d => yScale(d.high));
+
+ const data =
+    [{"date":"Jan","high":78.435},
+    {"date":"Feb","high":80.8},
+    {"date":"Mar","high":79.6},
+    {"date":"Apr","high":90.3},
+    {"date":"May","high":103.4},
+    {"date":"Jun","high":94.4},
+    {"date":"July","high":102.2},
+    {"date":"Aug","high":96.9},
+    {"date":"Sep","high":92.8},
+    {"date":"Oct","high":102.6},
+    {"date":"Nov", "high":96.0},
+    {"date":"Dec", "high":107.7}];
+    
+    data.forEach(function(d) {
+        d.date = parseTime(d.date);
+    });
+
+
+
+  xScale
+    .domain(d3.extent(data, d => d.date));
+
+  g.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis);
+
+  g.append("g")
+    .call(d3.axisLeft(yScale))
+
+  g.append("path")
+    .datum(data)
+    .attr("class", "line")
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-width", 0)
+    .attr("d", line);
+    
+  const dataset = [{s: 0, sw: 450}, {s: 60, sw: 430}, {s: 120, sw: 440}, {s: 180, sw: 320}, {s: 240, sw: 190}, {s: 300, sw: 290}, {s: 360, sw: 210}, {s: 420, sw: 265}, {s: 480, sw: 300}, {s: 540, sw: 200}, {s: 600, sw: 260}, {s: 660, sw: 150}];
+  const circ = d3.select("g").selectAll("circle").data(dataset);
+  circ.enter()
+      .append("circle")
+        .attr("cx", d => d.s)
+        .attr("cy", d => 750)
+        .attr("r", "8")
+        .attr("fill", "orange");
+  
+  d3.select("g")
+  .on("click", function(event) {
+    d3.select("g")
+  .selectAll("circle")
+  .transition()
+  .duration(2000)
+  .attr("cy", d => d.sw);
+      });
+      
+  d3.select("svg")
+  .on("click", function () {
+    d3.select("svg")
+      .append("text")
+        .attr("x", "250")
+        .attr("y", "30")
+        .text("Monthly Bottles Sold (in 1000)")
+        .style("font-size", "2em");
+        });
+    
+</script>
 
 </div>
             </section>
@@ -147,7 +256,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/interactive.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/edit/main/interactive.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -155,7 +264,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/interactive.Rmd",
+"link": "https://github.com/RicoXu727/GR5702_final_g15_2/blob/main/interactive.Rmd",
 "text": null
 },
 "download": null,
