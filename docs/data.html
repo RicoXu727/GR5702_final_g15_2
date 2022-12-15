@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 
@@ -88,7 +95,12 @@
 <li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#peoples-drinking-preferences"><i class="fa fa-check"></i><b>4.1</b> People’s drinking preferences</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#regional-perspective"><i class="fa fa-check"></i><b>4.2</b> Regional perspective</a></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#timing-perspective"><i class="fa fa-check"></i><b>4.3</b> Timing perspective</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -129,21 +141,15 @@
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To explore the presence of missing values, we first count how many missing values exist for each column. From the displayed results, we have a small percentage of missing values in our dataset, for example Store Name, Store Number, Date and these columns do not have missing values. The attributes that do have the highest number of values are concentrated in City, Zip Code, County Number, County. And they have the same exact data, which inspired us to explore the pattern of missing values.</p>
-<pre><code>##                  City              Zip Code         County Number 
-##                   188                   188                   188 
-##                County              Category         Category Name 
-##                   188                   115                   115 
-##          Bottles Sold     State Bottle Cost   State Bottle Retail 
-##                     7                     1                     1 
-## Volume Sold (Gallons)                  Date          Store Number 
-##                     1                     0                     0 
-##            Store Name         Vendor Number           Vendor Name 
-##                     0                     0                     0 
-##           Item Number      Item Description                  Pack 
-##                     0                     0                     0 
-##    Bottle Volume (ml)        Sale (Dollars) 
-##                     0                     0</code></pre>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre><code>##                  City              Zip Code         County Number                County              Category 
+##                   188                   188                   188                   188                   115 
+##         Category Name          Bottles Sold     State Bottle Cost   State Bottle Retail Volume Sold (Gallons) 
+##                   115                     7                     1                     1                     1 
+##                  Date          Store Number            Store Name         Vendor Number           Vendor Name 
+##                     0                     0                     0                     0                     0 
+##           Item Number      Item Description                  Pack    Bottle Volume (ml)        Sale (Dollars) 
+##                     0                     0                     0                     0                     0</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>The package naniar provides us with a good visualization method. gg_miss_upset function visually shows us what the missing data values are and which columns have missing values. In addition to that, there are some associated missing values column, connected by a solid black line. There is a clear and strong correlation between the geographical location and the attributes of the city. In City, Zip Code, County Number, County. Once one is missing, all other values are also missing. They are a set of combinations together. In addition, another independent missing value attribute is Category Name, but there are not many, out of 100,000 data, only 115 data do not have this attribute.</p>
 <p>Since the absence of a particular attribute in the data is rare, direct deletion does not affect the rendering of the data. We choose to delete the missing value using na.omit() function.</p>
 
