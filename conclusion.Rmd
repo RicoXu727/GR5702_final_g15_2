@@ -1,2 +1,31 @@
 # Conclusion
 
+**Findings:**
+
+In this project, we have discovered several key findings regarding the liquor sales in Iowa:
+
+1.  In Iowa American Vodkas and Canadian Whiskies are the most popular liquors and people often buy them in large quantities.
+
+2.  We found that there is a seasonal trend on the Iowa liquor sales.
+
+3.  In the first quarter, Fridays are often the day with lowest sales of a given week, but the sales gradually increase throughout the year and exceed average by the last quarter.
+
+4.  The liquor sales of different counties are positively correlated with the number of large cities in the given county.
+
+**Future improvement:**
+
+D3:
+
+1.  Due to the limited data amount, we could have used other graph structures such as a line graph. While the scatter plot clearly shows the trend of monthly liquor sales, a line graph can better demonstrate the value difference in between each month.
+
+2.  In the future, we would like to include more interactive features such as the coordinates of each point, slope between points, and a best fit line.
+
+**Data Manipulation:**
+
+We believe that the introduction of an auxiliary dataset that includes complementary information such as demographic, geographic, or climate data, would significantly improve our capability to produce meaningful insights. Solely relying on the liquor sale dataset limits our analysis to mostly speculations and does not allow us enough data to verify our assumptions.
+
+**Plotly:**
+
+1.  Throughout the project, we are amazed by the power of interactive graphs. Hence, in the future, we would like to include more interactive graphs as they are usually more concise while providing just as much insights as conventional static visualization methods. In addition, it will allow the viewers to extract useful information without tediously iterating through each point on the graph.
+
+2.  The diversity of graph structures is another aspect we would like to make improvements on. We believe that having diversified graphs enables us to examine each variable and the relationships between them from different perspectives.
